@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: giropops-taskrun
+spec:
+  inputs:
+    resources:
+      - name: giropops
+        resourceRef:
+          name: giropops
+  taskRef:
+    name: giropops-ci

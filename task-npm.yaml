@@ -1,0 +1,34 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: giropops-ci
+spec:
+  inputs: 
+    resources:
+      - name: giropops
+        type: git
+  steps:
+    - name: npm-install
+      image: node
+      command:
+        - /bin/sh
+        - -c
+      args:
+        - npm install
+      workingDir: /workspace/giropops
+    - name: test
+      image: node
+      command:
+        - /bin/sh
+        - -c
+      args:
+        - npm run test
+      workingDir: /workspace/giropops
+    - name: build
+      image: node
+      command:
+        - /bin/sh
+        - -c
+      args:
+        - npm run build
+      workingDir: /workspace/giropops

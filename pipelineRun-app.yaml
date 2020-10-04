@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: giropops-pipelinerun
+spec:
+  pipelineRef:
+    name: giropops-pipeline
+  serviceAccountName: 'default'
+  resources:
+    - name: pipeline-git
+      resourceSpec:
+        type: git
+        params:
+          - name: revision
+            value: master
+          - name: url
+            value: https://github.com/otaviof/typescript-ex
