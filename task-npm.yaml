@@ -7,6 +7,10 @@ spec:
     resources:
       - name: giropops
         type: git
+    params:
+      - name: OUTPUT
+        description: The image tag which will be built
+        default: linuxtips/otavio-typescript-ex:latest
   steps:
     - name: npm-install
       image: node
@@ -32,3 +36,20 @@ spec:
       args:
         - npm run build
       workingDir: /workspace/giropops
+    - name: build-image
+      image: quay.io/buildah/stable:latest
+      securityContext:
+        privileged: true
+      workingDir: /workspace/giropops
+      script: |
+        buildah bud \
+          --storage-driver=overlay \
+          --tls-verify=false \
+          --tag=$(params.OUTPUT) \
+          .
+      volumeMounts:
+        - name: containers-storage
+          mountPath: /var/lib/containers
+  volumes:
+    - name: containers-storage
+      emptyDir: {}
